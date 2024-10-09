@@ -6,28 +6,23 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
 
     steps:
-    - uses: actions/checkout@v3
-      with: 
-        ref: ${{github.ref}}     
-    
+    - name: Check out Repository
+      uses: actions/checkout@v4
+
     - name: Set up JDK 11
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         java-version: '11'
         distribution: 'temurin'
-        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-        settings-path: ${{ github.workspace }} # location for the settings.xml file
 
-    - name: Build SGrJavaSamples
+    - name: Build SampleCommunicator
+      working-directory: ./SampleCommunicator
       run: |
-        cd ./SampleCommunicator
-        chmod +x gradlew
-        ./gradlew build
-
+        chmod +x gradlew && \
+        ./gradlew clean build --no-daemon

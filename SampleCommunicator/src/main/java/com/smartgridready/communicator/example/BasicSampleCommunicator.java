@@ -1,6 +1,6 @@
 /**
 *Copyright(c) 2021 Verein SmartGridready Switzerland
-* 
+ *
 This Open Source Software is BSD 3 clause licensed:
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
@@ -21,13 +21,13 @@ check for "EI-Modbus" and "Generic" directories in our Namespace http://www.smar
 */
 package com.smartgridready.communicator.example;
 
-import com.smartgridready.communicator.example.helper.MockModbusGatewayFactory;
-import com.smartgridready.communicator.common.api.GenDeviceApi;
-import com.smartgridready.communicator.common.api.SGrDeviceBuilder;
-import com.smartgridready.communicator.modbus.api.ModbusGatewayFactory;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.smartgridready.communicator.common.api.GenDeviceApi;
+import com.smartgridready.communicator.common.api.SGrDeviceBuilder;
+import com.smartgridready.communicator.example.helper.MockModbusGatewayFactory;
+import com.smartgridready.communicator.modbus.api.ModbusGatewayFactory;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -83,7 +83,7 @@ public class BasicSampleCommunicator {
 			// create actual Modbus devices with serial or TCP connection.
 			//
 			Properties configProperties = new Properties();
-			configProperties.setProperty("port_name", SERIAL_PORT_NAME);
+			configProperties.setProperty("serial_port", SERIAL_PORT_NAME);
 
 			GenDeviceApi sgcpDevice = new SGrDeviceBuilder()
 				.useModbusGatewayFactory(mockModbusFactory)
@@ -123,7 +123,7 @@ public class BasicSampleCommunicator {
 		}									
 	}
 
-	private static InputStream getDeviceDescriptionFile(String fileName) throws IOException, FileNotFoundException {
+	private static InputStream getDeviceDescriptionFile(String fileName) throws IOException {
 		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 		InputStream istr = classloader.getResourceAsStream(fileName);
 		if (istr != null) {

@@ -10,7 +10,7 @@ import com.smartgridready.communicator.common.api.values.EnumRecord;
 import com.smartgridready.communicator.common.api.values.EnumValue;
 import com.smartgridready.communicator.common.api.values.Value;
 import com.smartgridready.communicator.common.helper.DeviceDescriptionLoader;
-import com.smartgridready.communicator.modbus.helper.GenDriverAPI4ModbusRTUMock;
+import com.smartgridready.communicator.example.helper.GenDriverAPI4ModbusMock;
 import com.smartgridready.communicator.modbus.impl.SGrModbusDevice;
 
 import org.slf4j.Logger;
@@ -50,8 +50,8 @@ public class EnumAndBitmapSampleCommunicator {
             DeviceFrame sgcpMeter = loader.load("", deviceDescFilePath);
 
             // initialize transport
-            GenDriverAPI4Modbus mbRTUMock = createMockModbusDriver();
-            mbRTUMock.initTrspService(SERIAL_PORT_NAME, 9600, Parity.EVEN, DataBits.EIGHT, StopBits.ONE);
+            GenDriverAPI4Modbus mbRTUMock = createMockModbusDriver(SERIAL_PORT_NAME, 9600, Parity.EVEN, DataBits.EIGHT, StopBits.ONE);
+            mbRTUMock.connect();
 
             // create device instance
             SGrModbusDevice sgcpDevice = new SGrModbusDevice(sgcpMeter, mbRTUMock);
@@ -121,8 +121,8 @@ public class EnumAndBitmapSampleCommunicator {
         }
     }
 
-    static GenDriverAPI4Modbus createMockModbusDriver() {
-        GenDriverAPI4ModbusRTUMock mbRTUMock = new GenDriverAPI4ModbusRTUMock();
+    static GenDriverAPI4Modbus createMockModbusDriver(String comPort, int baudRate, Parity parity, DataBits dataBits, StopBits stopBits) {
+        GenDriverAPI4ModbusMock mbRTUMock = new GenDriverAPI4ModbusMock(comPort, baudRate, parity, dataBits, stopBits);
         mbRTUMock.setIsIntegerType(true);
         return mbRTUMock;
     }

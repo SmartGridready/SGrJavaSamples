@@ -80,9 +80,9 @@ Rem: The folder [your-local-project-folder]/SGrSpecifications/XMLInstances/ExtIn
 - Sending the commands to the Product through the transport service specified by the Product.
 </p>
                 <p></p> </td></tr>
-    <tr><td><b>Library:</b></td><td>commhandler4modbus.jar</td>                                                                                          
+    <tr><td><b>Library:</b></td><td>sgr-commhandler-2.0.0.jar</td>                                                                                          
     <tr><td><b>SGrProject:</b></td>
-    <td><a href="https://github.com/SmartgridReady/SGrJava/tree/master/InterfaceFactory/CommHandler4Modbus">SmartgridReady/SGrJava/InterfaceFactory/CommHandler4Modbus</a></td></tr>
+    <td><a href="https://github.com/SmartgridReady/SGrJava/tree/master/CommHandler">SmartgridReady/SGrJava/CommHandler</a></td></tr>
     </r>
 </table> 
 
@@ -171,23 +171,19 @@ Step2:
 Load the suitable device driver to communicate with the device. The example below uses a mocked driver for modbus RTU.
 Change the driver to the real driver, suitable for your device. For example:
 <br><br>
-```GenDriverAPI4Modbus mbTCP = new GenDriverAPI4ModbusTCP();```<br>
-```GenDriverAPI4Modbus mbRTU = new GenDriverAPI4ModbusRTU();```<br>
-```GenDriverAPI4Modbus mbRTUMock = new GenDriverAPI4ModbusRTUMock();```
+```GenDriverAPI4Modbus mbTCP = new GenDriverAPI4ModbusTCP("127.0.0.1", 502);```<br>
+```GenDriverAPI4Modbus mbRTU = new GenDriverAPI4ModbusRTU("COM1");```<br>
+```GenDriverAPI4Modbus mbRTUMock = new GenDriverAPI4ModbusRTUMock("COM1");```
 <br><br>
 
-Step 2a (Modbus RTU only):
-Initialie the serial COM port used by the modbus transport service.
-```mbRTUMock.initTrspService("COM9");```
-<br><br>
-
-Step 2b (Modbus RTU only): Set the unit identifier of the device to read out. <br>
-```mbRTUMock.setUnitIdentifier((byte) 11);```
+Step 2:
+Instantiate a modbus device. Provide the device description and the device driver instance to be used for the device.<br><br>
+```SGrModbusDevice sgcpDevice = new SGrModbusDevice(sgcpMeter, mbRTUMock);```
 <br><br>
 
 Step 3:
-Instantiate a modbus device. Provide the device description and the device driver instance to be used for the device.<br><br>
-```SGrModbusDevice sgcpDevice = new SGrModbusDevice(sgcpMeter, mbRTUMock );```
+Initialize the serial COM port or TCP connection used by the modbus transport service.
+```sgcpDevice.connect();```
 <br><br>
 
 Step 4: Read the values from the device. 
@@ -198,6 +194,10 @@ Step 4: Read the values from the device.
 ```String val1 = sgcpDevice.getVal("VoltageAC", "VoltageL1");```<br>
 ```String val2 = sgcpDevice.getVal("VoltageAC", "VoltageL2");```<br>
 ```String val3 = sgcpDevice.getVal("VoltageAC", "VoltageL3");```<br><br>
+
+Step 5: Disconnect device.
+```sgcpDevice.disconnect();```
+<br><br>
 
 The complete sample code can be found on github:<br>
 https://github.com/SmartgridReady/SGrJavaSamples/blob/master/SampleCommunicator/src/main/java/ch/smartgridready/communicator/example/BasicSampleCommunicator.java
