@@ -21,20 +21,17 @@ check for "EI-Modbus" and "Generic" directories in our Namespace http://www.smar
 */
 package com.smartgridready.communicator.example;
 
-import com.smartgridready.ns.v0.DeviceFrame;
-
-import com.smartgridready.driver.api.modbus.GenDriverAPI4Modbus;
+import com.smartgridready.communicator.common.helper.DeviceDescriptionLoader;
+import com.smartgridready.communicator.example.helper.GenDriverAPI4ModbusMock;
+import com.smartgridready.communicator.modbus.impl.SGrModbusDevice;
 import com.smartgridready.driver.api.modbus.DataBits;
+import com.smartgridready.driver.api.modbus.GenDriverAPI4Modbus;
 import com.smartgridready.driver.api.modbus.Parity;
 import com.smartgridready.driver.api.modbus.StopBits;
-import com.smartgridready.communicator.common.helper.DeviceDescriptionLoader;
-import com.smartgridready.communicator.modbus.helper.GenDriverAPI4ModbusRTUMock;
-import com.smartgridready.communicator.modbus.impl.SGrModbusDevice;
+import com.smartgridready.ns.v0.DeviceFrame;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-
 
 import java.io.FileNotFoundException;
 import java.net.URL;
@@ -91,15 +88,15 @@ public class BasicSampleCommunicatorClassic {
 			// mocked driver for modbus RTU.
 			//
 			// Change the driver to the real driver, suitable for your device. For example:
-			// - GenDriverAPI4Modbus mbTCP = new GenDriverAPI4ModbusTCP()
-			// - GenDriverAPI4Modbus mbRTU = new GenDriverAPI4ModbusRTU()
+			// - GenDriverAPI4Modbus mbTCP = new GenDriverAPI4ModbusTCP("127.0.0.1", 502)
+			// - GenDriverAPI4Modbus mbRTU = new GenDriverAPI4ModbusRTU("COM1")
 			//
-			GenDriverAPI4Modbus mbRTUMock = new GenDriverAPI4ModbusRTUMock();
+			GenDriverAPI4Modbus mbRTUMock = new GenDriverAPI4ModbusMock(SERIAL_PORT_NAME, 9600, Parity.EVEN, DataBits.EIGHT, StopBits.ONE);
 			
 			// Step 2 (Modbus RTU only):
 			// Initialise the serial COM port used by the modbus transport service.
 			//
-			mbRTUMock.initTrspService(SERIAL_PORT_NAME, 9600, Parity.EVEN, DataBits.EIGHT, StopBits.ONE);
+			mbRTUMock.connect();
 				
 			// Step 3:
 			// Instantiate a modbus device. Provide the device description and the device driver

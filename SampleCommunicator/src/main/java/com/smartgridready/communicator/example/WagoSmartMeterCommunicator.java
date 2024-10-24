@@ -22,15 +22,11 @@ author: IBT/cb, FHNW/mkr
 
 package com.smartgridready.communicator.example;
 
-import com.smartgridready.ns.v0.DeviceFrame;
-import com.smartgridready.driver.api.modbus.DataBits;
-import com.smartgridready.driver.api.modbus.Parity;
-import com.smartgridready.driver.api.modbus.StopBits;
-import com.smartgridready.communicator.common.helper.DeviceDescriptionLoader;
-import com.smartgridready.communicator.modbus.impl.SGrModbusDevice;
+import com.smartgridready.communicator.common.api.GenDeviceApi;
+import com.smartgridready.communicator.common.api.SGrDeviceBuilder;
+import com.smartgridready.communicator.modbus.impl.SGrModbusGatewayRegistry;
 
-import de.re.easymodbus.adapter.GenDriverAPI4ModbusRTU;
-
+import java.io.InputStream;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -48,22 +44,6 @@ import org.slf4j.LoggerFactory;
 public class WagoSmartMeterCommunicator {
 
 	private static final Logger LOG = LoggerFactory.getLogger(WagoSmartMeterCommunicator.class);
-
-	private static final String XML_BASE_DIR = "../../SGrSpecifications/XMLInstances/ExtInterfaces/";
-
-	private static final String PROFILE_VOLTAGE_AC = "VoltageAC";
-	private static final String PROFILE_CURRENT_AC = "CurrentAC";
-
-	private static final String PROFILE_POWER_FACTOR = "PowerFactor";
-	private static final String PROFILE_ACTIVE_ENERGY_AC = "ActiveEnergyAC";
-	private static final String PROFILE_ACTIVE_POWER_AC = "ActivePowerAC";
-	private static final String PROFILE_REACTIVE_POWER_AC = "ReactivePowerAC";
-	private static final String PROFILE_APPARENT_POWER_AC = "ApparentPowerAC";
-	private static final String PROFILE_ACTIVE_ENERGY_BALANCE_AC = "ActiveEnergyBalanceAC";
-	private static final String PROFILE_REACTIVE_ENERGY_BALANCE_AC = "ReactiveEnergyBalanceAC";
-	private static final String PROFILE_POWER_QUADRANT = "PowerQuadrant";
-	private static final String PROFILE_CURRENT_DIRECTION = "CurrentDirection";
-
 	private static final String DEVICE_DESCRIPTION_FILE_NAME = "SGr_04_0014_0000_WAGO_SmartMeterV0.2.1.xml";
 	private static final String SERIAL_PORT_NAME = "COM3";
 	
@@ -72,117 +52,33 @@ public class WagoSmartMeterCommunicator {
 		try {
 			// configuration placeholders to be replaced in EID
 			Properties configProperties = new Properties();
-			configProperties.setProperty("port_name", SERIAL_PORT_NAME);
+			configProperties.setProperty("serial_port", SERIAL_PORT_NAME);
 
-			// load device description from EID
-			DeviceDescriptionLoader loader = new DeviceDescriptionLoader();
-			DeviceFrame tstMeter = loader.load(XML_BASE_DIR, DEVICE_DESCRIPTION_FILE_NAME, configProperties);
+			GenDeviceApi device = new SGrDeviceBuilder()
+					.useSharedModbusGatewayRegistry(new SGrModbusGatewayRegistry())
+					.eid(getDeviceDescriptionFileStream())
+					.properties(configProperties)
+					.build();
 
-			// initialize transport
-			GenDriverAPI4ModbusRTU mbRTU = new GenDriverAPI4ModbusRTU();
-			mbRTU.initTrspService(SERIAL_PORT_NAME, 9600, Parity.EVEN, DataBits.EIGHT, StopBits.ONE);
-			
-			// create device instance
-			SGrModbusDevice devWagoMeter = new SGrModbusDevice(tstMeter, mbRTU);
+			device.connect();
 
-			// run device tests
-			testDevice(mbRTU, devWagoMeter);
+			LOG.info("Device-name {}", device.getDeviceInfo().getName());
+			LOG.info("Device-interface {}", device.getDeviceInfo().getInterfaceType());
+
+			// Read the values from all data points and log them
+			var deviceData = device.getDeviceInfo().readData();
+			deviceData.forEach(dataPointValue -> LOG.info(dataPointValue.toString()));
 
 			// close transport
-			mbRTU.disconnect();
+			device.disconnect();
 		} catch (Exception e) {
 			LOG.error("Error loading device description.", e);
 		}							
 	}
 
-	private static void testDevice(GenDriverAPI4ModbusRTU mbRTU, SGrModbusDevice devWagoMeter) {
-		float fVal3;
-		String sVal3;
-		String sVal4;
-		float fVal1;
-		float fVal4;
-		String sVal1;
-		float fVal2;
-		String sVal2;
-
-		try {
-			LOG.info("\nTesting WAGO Meter");
-
-			fVal1 = devWagoMeter.getVal(PROFILE_VOLTAGE_AC, "VoltageL1").getFloat32();
-			fVal2 = devWagoMeter.getVal(PROFILE_VOLTAGE_AC, "VoltageL2").getFloat32();
-			fVal3 = devWagoMeter.getVal(PROFILE_VOLTAGE_AC, "VoltageL3").getFloat32();
-			fVal4 = devWagoMeter.getVal("Frequency", "Frequency").getFloat32();
-			LOG.info("  VoltageAC L1,2,3/Frequency [V,Hz]: {},  {},  {},  {}", fVal1, fVal2, fVal3, fVal4);
-
-			fVal1 = devWagoMeter.getVal(PROFILE_VOLTAGE_AC, "VoltageACL1-L2").getFloat32();
-			fVal2 = devWagoMeter.getVal(PROFILE_VOLTAGE_AC, "VoltageACL1-L3").getFloat32();
-			fVal3 = devWagoMeter.getVal(PROFILE_VOLTAGE_AC, "VoltageACL2-L3").getFloat32();
-			LOG.info("  VoltageAC L12/13/23 [V]:           {},  {},  {}", fVal1, fVal2, fVal3);
-
-			fVal1 = devWagoMeter.getVal(PROFILE_CURRENT_AC, "CurrentACL1").getFloat32();
-			fVal2 = devWagoMeter.getVal(PROFILE_CURRENT_AC, "CurrentACL2").getFloat32();
-			fVal3 = devWagoMeter.getVal(PROFILE_CURRENT_AC, "CurrentACL3").getFloat32();
-			LOG.info("  CurrentAC L1/2/3 [V]:              {},  {},  {}", fVal1, fVal2, fVal3);
-
-			fVal1 = devWagoMeter.getVal(PROFILE_POWER_FACTOR, PROFILE_POWER_FACTOR).getFloat32();
-			fVal2 = devWagoMeter.getVal(PROFILE_POWER_FACTOR, "PowerFactorL1").getFloat32();
-			fVal3 = devWagoMeter.getVal(PROFILE_POWER_FACTOR, "PowerFactorL2").getFloat32();
-			fVal4 = devWagoMeter.getVal(PROFILE_POWER_FACTOR, "PowerFactorL3").getFloat32();
-			LOG.info("  Powerfactor tot/L1/L2/L3:          {},  {},  {},  {}", fVal1, fVal2, fVal3, fVal4);
-
-			sVal1 = devWagoMeter.getVal(PROFILE_ACTIVE_ENERGY_AC, "ActiveEnergyACtot").getString();
-			sVal2 = devWagoMeter.getVal(PROFILE_ACTIVE_ENERGY_AC, "ActiveEnergyACL1").getString();
-			sVal3 = devWagoMeter.getVal(PROFILE_ACTIVE_ENERGY_AC, "ActiveEnergyACL2").getString();
-			sVal4 = devWagoMeter.getVal(PROFILE_ACTIVE_ENERGY_AC, "ActiveEnergyACL3").getString();
-			LOG.info("  ActiveEnergyAC [kWh]:         {},  {},  {},  {}", sVal1, sVal2, sVal3, sVal4);
-
-			sVal1 = devWagoMeter.getVal(PROFILE_ACTIVE_POWER_AC, "ActivePowerACtot").getString();
-			sVal2 = devWagoMeter.getVal(PROFILE_ACTIVE_POWER_AC, "ActivePowerACL1").getString();
-			sVal3 = devWagoMeter.getVal(PROFILE_ACTIVE_POWER_AC, "ActivePowerACL2").getString();
-			sVal4 = devWagoMeter.getVal(PROFILE_ACTIVE_POWER_AC, "ActivePowerACL3").getString();
-			LOG.info("  ActivePowerAC [kW]:           {}, {},  {},  {}", sVal1, sVal2, sVal3, sVal4);
-
-			sVal1 = devWagoMeter.getVal(PROFILE_REACTIVE_POWER_AC, "ReactivePowerACtot").getString();
-			sVal2 = devWagoMeter.getVal(PROFILE_REACTIVE_POWER_AC, "ReactivePowerACL1").getString();
-			sVal3 = devWagoMeter.getVal(PROFILE_REACTIVE_POWER_AC, "ReactivePowerACL2").getString();
-			sVal4 = devWagoMeter.getVal(PROFILE_REACTIVE_POWER_AC, "ReactivePowerACL3").getString();
-			LOG.info("  ReactivePowerAC [kvar]:       {}, {},  {},  {}", sVal1, sVal2, sVal3, sVal4);
-
-			sVal1 = devWagoMeter.getVal(PROFILE_APPARENT_POWER_AC, "ApparentPowerACtot").getString();
-			sVal2 = devWagoMeter.getVal(PROFILE_APPARENT_POWER_AC, "ApparentPowerACL1").getString();
-			sVal3 = devWagoMeter.getVal(PROFILE_APPARENT_POWER_AC, "ApparentPowerACL2").getString();
-			sVal4 = devWagoMeter.getVal(PROFILE_APPARENT_POWER_AC, "ApparentPowerACL3").getString();
-			LOG.info("  ApparentPowerAC [kva]:        {}, {},  {},  {}", sVal1, sVal2, sVal3, sVal4);
-
-			sVal1 = devWagoMeter.getVal(PROFILE_ACTIVE_ENERGY_BALANCE_AC, "ActiveImportAC").getString();
-			sVal2 = devWagoMeter.getVal(PROFILE_ACTIVE_ENERGY_BALANCE_AC, "ActiveExportAC").getString();
-			sVal3 = devWagoMeter.getVal(PROFILE_ACTIVE_ENERGY_BALANCE_AC, "ActiveNetAC").getString();
-			LOG.info("  ActiveEnergyBalanceAC [KWh]:    {}, {},  {}", sVal1, sVal2, sVal3);
-
-			sVal1 = devWagoMeter.getVal(PROFILE_REACTIVE_ENERGY_BALANCE_AC, "ReactiveImportAC").getString();
-			sVal2 = devWagoMeter.getVal(PROFILE_REACTIVE_ENERGY_BALANCE_AC, "ReactiveExportAC").getString();
-			sVal3 = devWagoMeter.getVal(PROFILE_REACTIVE_ENERGY_BALANCE_AC, "ReactiveNetAC").getString();
-			LOG.info("  ReactiveEnergyBalanceAC [kvarh]:{}, {},  {}", sVal1, sVal2, sVal3);
-
-			sVal1 = devWagoMeter.getVal(PROFILE_POWER_QUADRANT, "PwrQuadACtot").getString();
-			sVal2 = devWagoMeter.getVal(PROFILE_POWER_QUADRANT, "PwrQuadACL1").getString();
-			sVal3 = devWagoMeter.getVal(PROFILE_POWER_QUADRANT, "PwrQuadACL2").getString();
-			sVal4 = devWagoMeter.getVal(PROFILE_POWER_QUADRANT, "PwrQuadACL3").getString();
-			LOG.info("  PowerQuadrant  tot/L1/L3/L3 :       {}, {}, {}, {}", sVal1, sVal2, sVal3, sVal4);
-
-			sVal1 = devWagoMeter.getVal(PROFILE_CURRENT_DIRECTION, "CurrentDirL1").getString();
-			sVal2 = devWagoMeter.getVal(PROFILE_CURRENT_DIRECTION, "CurrentDirL2").getString();
-			sVal3 = devWagoMeter.getVal(PROFILE_CURRENT_DIRECTION, "CurrentDirL3").getString();
-			LOG.info("  CurrentDirection  L1/L3/L3 :        {}, {},  {}", sVal1, sVal2, sVal3);
-		}
-		catch ( RuntimeException e)
-		{
-			LOG.info("Thread interrupted");
-			Thread.currentThread().interrupt();
-		}
-		catch ( Exception e)
-		{
-			LOG.error( "Error reading value from device.", e);
-		}
+	private static InputStream getDeviceDescriptionFileStream() {
+		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+		return classloader.getResourceAsStream(DEVICE_DESCRIPTION_FILE_NAME);
 	}
+
 }

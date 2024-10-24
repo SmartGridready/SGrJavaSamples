@@ -49,9 +49,9 @@ SGr-JavaSamples stellt Beispielprojekte zur Verfügung, welche die Anwendung der
 - Senden der Kommandos an das Product über den durch das Product vorgegebenen Transportservice
 </p>
                 <p></p> </td></tr>
-    <tr><td><b>Library:</b></td><td>commhandler4modbus.jar</td></tr>                                                                                          
+    <tr><td><b>Library:</b></td><td>sgr-commhandler-2.0.0.jar</td></tr>                                                                                          
     <tr><td><b>SGrProjekt:</b></td>
-    <td><a href="https://github.com/SmartgridReady/SGrJava/tree/master/InterfaceFactory/CommHandler4Modbus">SmartgridReady/SGrJava/InterfaceFactory/CommHandler4Modbus<a></td>
+    <td><a href="https://github.com/SmartgridReady/SGrJava/tree/master/CommHandler">SmartgridReady/SGrJava/CommHandler</a></td></tr>
     </r>
 </table> 
 
@@ -115,8 +115,8 @@ Z.B. Wärmepumpe​, Ladestation​, Wechselrichter​, Batterie​, Stromzähle
 
 
 ### Anforderungen / Prerequisites
-- Gradle Version >= 7.3.3. Anm.: Wenn keine IDE mit Gradle-Integration verwendet wird, muss Gradle erst lokal installiert werden: https://gradle.org/install/
-- Java JDK Version >= Java 1.8
+- Gradle Version >= 8.7. Anm.: Wenn keine IDE mit Gradle-Integration verwendet wird, muss Gradle erst lokal installiert werden: https://gradle.org/install/
+- Java JDK Version >= Java 11
 
 ### Clone
 - Klone dieses Repo auf das lokale Device: https://github.com/SmartgridReady/SGrJavaSamples.git
@@ -141,33 +141,33 @@ Step2:
 Load the suitable device driver to communicate with the device. The example below uses mocked driver for modbus RTU.
 Change the driver to the real driver, suitable for your device. For example:
 <br><br>
-```GenDriverAPI4Modbus mbTCP = new GenDriverAPI4ModbusTCP();```<br>
-```GenDriverAPI4Modbus mbRTU = new GenDriverAPI4ModbusRTU();```<br>
-```GenDriverAPI4Modbus mbRTUMock = new GenDriverAPI4ModbusRTUMock();```
+```GenDriverAPI4Modbus mbTCP = new GenDriverAPI4ModbusTCP("127.0.0.1", 502);```<br>
+```GenDriverAPI4Modbus mbRTU = new GenDriverAPI4ModbusRTU("COM1");```<br>
+```GenDriverAPI4Modbus mbRTUMock = new GenDriverAPI4ModbusRTUMock("COM1");```
 <br><br>
 
-Step 2a (Modbus RTU only):
-Initialise the serial COM port used by the modbus transport service.
-```mbRTUMock.initTrspService("COM9");```
+Step 2:
+Instantiate a modbus device. Provide the device description and the device driver instance to be used for the device.<br><br>
+```SGrModbusDevice sgcpDevice = new SGrModbusDevice(sgcpMeter, mbRTUMock);```
 <br><br>
 
 Step 3:
-Instantiate a modbus device. Provide the device Beschreibung and the device driver instance to be used for the device.<br><br>
-```SGrModbusDevice sgcpDevice = new SGrModbusDevice(sgcpMeter, mbRTUMock );```<br> ```try {```
+Initialize the serial COM port or TCP connection used by the modbus transport service.
+```sgcpDevice.connect();```
 <br><br>
 
-Step 4 (Modbus RTU only): Set the unit identifier of the device to read out. <br>
-```mbRTUMock.setUnitIdentifier((byte) 11);```
+Step 4: Read the values from the device. 
+- "CurrentAC" is the name of the functional profile.
+- "CurrentACL1", "CurrentACL2", "CurrentACL3" and "ActiveNetACN" are the names of the Datapoints that report the values corresponding to their names.
+
+<i>Hint: You can only read values for functional profiles and datapoints that exist in the device description XML.</i><br>
+```String val1 = sgcpDevice.getVal("VoltageAC", "VoltageL1");```<br>
+```String val2 = sgcpDevice.getVal("VoltageAC", "VoltageL2");```<br>
+```String val3 = sgcpDevice.getVal("VoltageAC", "VoltageL3");```<br><br>
+
+Step 5: Disconnect device.
+```sgcpDevice.disconnect();```
 <br><br>
-
-Step 5: Read the values from the device. 
-- "ActiveEnergyBalanceAC" is the name of the functional profile.
-- "ActiveImportAC", "ActiveExportAC" and "ActiveNetAC" are the names of the Datapoints that report the values corresponding to their names.
-
-<i>Hint: You can only read values for functional profiles and datapoints that exist in the ```String val1 = sgcpDevice.getVal("CurrentAC", "CurrentACL1");```<br>
-```String val2 = sgcpDevice.getVal("CurrentAC", "CurrentACL2");```<br>
-```String val3 = sgcpDevice.getVal("CurrentAC", "CurrentACL3");```<br>
-```String val4 = sgcpDevice.getVal("CurrentAC", "ActiveNetACN");```<br><br>
 
 Der komplette Beispielcode ist auf GitHub:<br>
 https://github.com/SmartgridReady/SGrJavaSamples/blob/documentation/SampleCommunicator/src/main/java/ch/smartgridready/communicator/example/SampleCommunicator.java

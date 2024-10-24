@@ -38,17 +38,12 @@ java {
 dependencies {
 
     // SGr dependencies
-    implementation group: 'com.smartgridready', name: 'sgr-specification', version: '1.1.0-SNAPSHOT'
-    implementation group: 'com.smartgridready', name: 'sgr-driver-api', version: '1.1.0-SNAPSHOT'
-    implementation group: 'com.smartgridready', name: 'sgr-commhandler', version: '1.1.0-SNAPSHOT'
-    implementation group: 'com.smartgridready', name: 'easymodbus', version: '1.1.0-SNAPSHOT'
+    implementation group: 'com.smartgridready', name: 'sgr-commhandler', version: '2.0.1'
+    implementation group: 'com.smartgridready', name: 'easymodbus', version: '2.0.0'
 
     // Logging
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.10'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j2-impl', version: '2.23.1'
-
-    // Reactive Java
-    implementation group: 'io.reactivex.rxjava3', name: 'rxjava', version: '3.1.5'
 
     // Use JUnit test framework
     implementation  group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.2'

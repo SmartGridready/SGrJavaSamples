@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/xsl/SGr.xsl"?>
 <DeviceFrame xmlns="http://www.smartgridready.com/ns/V0/"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://www.smartgridready.com/ns/V0/ ../../../../../SGrSpecifications/SchemaDatabase/SGr/Product/Product.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.smartgridready.com/ns/V0/ ../../../../../SGrSpecifications/SchemaDatabase/SGr/Product/Product.xsd">
   <deviceName>WAGOMeterV0.2.1</deviceName>
   <manufacturerName>WAGO</manufacturerName>
   <specificationOwnerIdentification>0</specificationOwnerIdentification>
@@ -70,7 +70,7 @@
   </deviceInformation>
   <configurationList>
     <configurationListElement>
-      <name>port_name</name>
+      <name>serial_port</name>
       <dataType>
         <string/>
       </dataType>
@@ -105,8 +105,8 @@
         <modbusInterfaceSelection>RTU</modbusInterfaceSelection>
         <modbusRtu>
           <slaveAddr>1</slaveAddr>
-          <portName>{{port_name}}</portName>
-          <baudRateSelected>9600</baudRateSelected>
+          <portName>{{serial_port}}</portName>
+          <baudRateSelected>19200</baudRateSelected>
           <byteLenSelected>8</byteLenSelected>
           <paritySelected>EVEN</paritySelected>
           <stopBitLenSelected>1</stopBitLenSelected>
@@ -1306,7 +1306,7 @@
           </dataPointList>
         </functionalProfileListElement>
 
-        <!--
+        <!--   
   *************************************************************
   CurrentDirection must be added to FP family
   *************************************************************
