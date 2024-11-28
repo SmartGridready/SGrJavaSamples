@@ -24,7 +24,6 @@ package com.smartgridready.communicator.example;
 
 import com.smartgridready.communicator.common.api.GenDeviceApi;
 import com.smartgridready.communicator.common.api.SGrDeviceBuilder;
-import com.smartgridready.communicator.modbus.impl.SGrModbusGatewayRegistry;
 
 import java.io.InputStream;
 import java.util.Properties;
@@ -37,7 +36,8 @@ import org.slf4j.LoggerFactory;
  * This class provides an example on how to communicate with a WAGO smart meter
  * over Modbus RTU (RS-485), using the current SmartGridready commhandler library.
  * <br>
- * The device is instantiated the old fashioned way, without using the device builder.
+ * The device is instantiated the new fashioned way, using the device builder.
+ * A shared Modbus driver registry is used in order to support multiple SGr devices on the same serial connection.
  * <br>
  * The program requires an actual serial port and an attached device.
  */
@@ -55,7 +55,7 @@ public class WagoSmartMeterCommunicator {
 			configProperties.setProperty("serial_port", SERIAL_PORT_NAME);
 
 			GenDeviceApi device = new SGrDeviceBuilder()
-					.useSharedModbusGatewayRegistry(new SGrModbusGatewayRegistry())
+					.useSharedModbusRtu(true)
 					.eid(getDeviceDescriptionFileStream())
 					.properties(configProperties)
 					.build();
@@ -66,7 +66,7 @@ public class WagoSmartMeterCommunicator {
 			LOG.info("Device-interface {}", device.getDeviceInfo().getInterfaceType());
 
 			// Read the values from all data points and log them
-			var deviceData = device.getDeviceInfo().readData();
+			var deviceData = device.getDeviceInfo().getValues();
 			deviceData.forEach(dataPointValue -> LOG.info(dataPointValue.toString()));
 
 			// close transport

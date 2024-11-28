@@ -23,6 +23,8 @@ public class GenDriverAPI4ModbusMock implements GenDriverAPI4Modbus {
 
     public GenDriverAPI4ModbusMock() {}
 
+    public GenDriverAPI4ModbusMock(String comPort) {}
+
     public GenDriverAPI4ModbusMock(String comPort, int baudRate) {}
 
     public GenDriverAPI4ModbusMock(String comPort, int baudRate, Parity parity) {}

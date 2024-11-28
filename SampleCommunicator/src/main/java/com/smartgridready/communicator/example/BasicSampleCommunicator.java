@@ -26,8 +26,8 @@ import org.slf4j.LoggerFactory;
 
 import com.smartgridready.communicator.common.api.GenDeviceApi;
 import com.smartgridready.communicator.common.api.SGrDeviceBuilder;
-import com.smartgridready.communicator.example.helper.MockModbusGatewayFactory;
-import com.smartgridready.communicator.modbus.api.ModbusGatewayFactory;
+import com.smartgridready.communicator.example.helper.MockModbusClientFactory;
+import com.smartgridready.driver.api.modbus.GenDriverAPI4ModbusFactory;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -63,7 +63,7 @@ public class BasicSampleCommunicator {
 
 	private static final Logger LOG = LoggerFactory.getLogger(BasicSampleCommunicator.class);
 
-	private static final ModbusGatewayFactory mockModbusFactory = new MockModbusGatewayFactory();
+	private static final GenDriverAPI4ModbusFactory mockModbusFactory = new MockModbusClientFactory();
 
 	private static final String PROFILE_VOLTAGE_AC = "VoltageAC";
 	private static final String DEVICE_DESCRIPTION_FILE_NAME = "SGr_04_0014_0000_WAGO_SmartMeterV0.2.1.xml";
@@ -86,7 +86,8 @@ public class BasicSampleCommunicator {
 			configProperties.setProperty("serial_port", SERIAL_PORT_NAME);
 
 			GenDeviceApi sgcpDevice = new SGrDeviceBuilder()
-				.useModbusGatewayFactory(mockModbusFactory)
+				.useModbusClientFactory(mockModbusFactory)
+				.useSharedModbusRtu(true)
 				.eid(getDeviceDescriptionFile(DEVICE_DESCRIPTION_FILE_NAME))
 				.properties(configProperties)
 				.build();
