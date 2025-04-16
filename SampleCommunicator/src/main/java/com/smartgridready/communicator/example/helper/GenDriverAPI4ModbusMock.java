@@ -25,6 +25,7 @@ import com.smartgridready.driver.api.modbus.GenDriverAPI4Modbus;
 
 /**
  * Mock for a {@code GenDriverAPI4Modbus}.
+ * Implements deprecated methods, which will be removed in next major version.
  */
 public class GenDriverAPI4ModbusMock implements GenDriverAPI4Modbus
 {
@@ -33,7 +34,7 @@ public class GenDriverAPI4ModbusMock implements GenDriverAPI4Modbus
     private static final int[] REGISTER_FLOAT_VAL = new int[] { 0x0000435c, 0x000051ec };
 
     private final boolean returnInteger;
-    
+
     private boolean isConnected = false;
 
     /**
@@ -45,6 +46,11 @@ public class GenDriverAPI4ModbusMock implements GenDriverAPI4Modbus
     public GenDriverAPI4ModbusMock(boolean returnInteger)
     {
         this.returnInteger = returnInteger;
+    }
+
+    @Override
+    public void setUnitIdentifier(short unitId) {
+        // not used in this mock
     }
 
     @Override

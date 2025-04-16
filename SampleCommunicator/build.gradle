@@ -43,10 +43,10 @@ java {
 dependencies {
 
     // SGr dependencies
-    implementation group: 'com.smartgridready', name: 'sgr-commhandler', version: '2.1.2'
-    runtimeOnly group: 'com.smartgridready', name: 'easymodbus', version: '2.1.0'
-    runtimeOnly group: 'com.smartgridready', name: 'sgr-driver-apachehttp', version: '2.0.0'
-    runtimeOnly group: 'com.smartgridready', name: 'sgr-driver-hivemq', version: '2.0.0'
+    implementation group: 'com.smartgridready', name: 'sgr-commhandler', version: '2.4.0'
+    runtimeOnly group: 'com.smartgridready', name: 'sgr-driver-j2mod', version: '1.0.0'
+    runtimeOnly group: 'com.smartgridready', name: 'sgr-driver-apachehttp', version: '2.1.0'
+    runtimeOnly group: 'com.smartgridready', name: 'sgr-driver-hivemq', version: '2.0.1'
 
     // Logging
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.10'
