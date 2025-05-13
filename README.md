@@ -148,7 +148,7 @@ Rem: The folder [your-local-project-folder]/SampleCommunicator/src/main/resource
     </tr>
     <tr>
         <td><b>Description:</b></td>
-        <td><p>The 'TransportService' is the link to the physical communication interface of the 'Product'. The SGr Core Team provides the EasyModbus Library for Modbus.</p></td>
+        <td><p>The 'TransportService' is the link to the physical communication interface of the 'Product'. The SGr Core Team provides the j2mod-based library for Modbus.</p></td>
     </tr>
     <tr>
         <td valign="top"><b>Responsibilities:</b></td>
@@ -162,14 +162,14 @@ Rem: The folder [your-local-project-folder]/SampleCommunicator/src/main/resource
     <tr>
         <td><b>Library:</b></td>
         <td><p>
-            easymodbus<br />
+            sgr-driver-j2mod<br />
             sgr-driver-apachehttp<br />
             sgr-driver-hivemq</p>
         </td>
     </tr>
     <tr>
         <td><b>SGrProject:</b></td>    
-        <td><p>für Modbus: <a href="https://github.com/SmartgridReady/SGrJavaDrivers/tree/master/EasyModbus">SmartgridReady/SGrJavaDrivers/EasyModbus</a></p>
+        <td><p>für Modbus: <a href="https://github.com/SmartgridReady/SGrJavaDrivers/tree/master/j2mod">SmartgridReady/SGrJavaDrivers/j2mod</a></p>
             <p>für REST: <a href="https://github.com/SmartGridready/SGrJavaDrivers/tree/master/ApacheHttp">SmartgridReady/SGrJavaDrivers/ApacheHttp</a></p>
             <p>für MQTT: <a href="https://github.com/SmartGridready/SGrJavaDrivers/tree/master/HiveMq">SmartgridReady/SGrJavaDrivers/HiveMq</a></p>
         </td>

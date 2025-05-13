@@ -169,6 +169,12 @@ class RestClientFactory implements GenHttpClientFactory
     @Override
     public GenHttpRequest createHttpRequest()
     {
+        return createHttpRequest(true);
+    }
+
+    @Override
+    public GenHttpRequest createHttpRequest(boolean verifyCertificate)
+    {
         return new RestHttpRequest();
     }
 
