@@ -43,9 +43,9 @@ java {
 dependencies {
 
     // SGr dependencies
-    implementation group: 'com.smartgridready', name: 'sgr-commhandler', version: '2.4.0'
+    implementation group: 'com.smartgridready', name: 'sgr-commhandler', version: '2.4.1'
     runtimeOnly group: 'com.smartgridready', name: 'sgr-driver-j2mod', version: '1.0.0'
-    runtimeOnly group: 'com.smartgridready', name: 'sgr-driver-apachehttp', version: '2.1.0'
+    runtimeOnly group: 'com.smartgridready', name: 'sgr-driver-apachehttp', version: '2.1.1'
     runtimeOnly group: 'com.smartgridready', name: 'sgr-driver-hivemq', version: '2.0.1'
 
     // Logging
