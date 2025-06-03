@@ -92,6 +92,9 @@ public class EnumAndBitmapSampleCommunicator
             // The next command sets the heat pump to comfort operation, which is defined as an enum.
             // To determine valid enum strings for a given data point, have a look at the EI-XML file.
             // ('./resources/SampleExternalInterfaceFile.xml' in our case)
+            // Make sure that the type of the value instance you are feeding into the data point
+            // matches the data point's data type, e.g. EnumValue if the data point's data type is enum.
+            // If not, conversion errors may occur. This is a library issue which is yet to be resolved.
             sgcpDevice.setVal(HEAT_PUMP_BASE_PROFILE, HEAT_PUMP_OP_CMD, EnumValue.of("WP_DOM_WATER_OP"));
             // It is also possible to set the value as an ordinal.
             sgcpDevice.setVal(HEAT_PUMP_BASE_PROFILE, HEAT_PUMP_OP_CMD, EnumValue.of(5));
