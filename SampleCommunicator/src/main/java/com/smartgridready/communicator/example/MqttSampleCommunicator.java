@@ -71,7 +71,7 @@ public class MqttSampleCommunicator
     private static final Logger LOG = LoggerFactory.getLogger(MqttSampleCommunicator.class);
 
     /** This example is tied to this EID-XML. */
-    private static final String DEVICE_DESCRIPTION_FILE_NAME = "SGr_02_mmmmm_dddd_WagoTestsystem_MQTT.xml";
+    private static final String DEVICE_DESCRIPTION_FILE_NAME = "SGr_04_0014_0000_WAGO_Testsystem_MQTT_V1.0.xml";
     
 
     public static void main(String[] args)
@@ -160,7 +160,7 @@ public class MqttSampleCommunicator
 }
 
 /**
- * Mock of a MQTT client factory for the EID-XML "SGr_02_mmmmm_dddd_WagoTestsystem_MQTT.xml".
+ * Mock of a MQTT client factory for the EID-XML "SGr_04_0014_0000_WAGO_Testsystem_MQTT_V1.0.xml".
  */
 class MockMessagingClientFactory implements GenMessagingClientFactory
 {

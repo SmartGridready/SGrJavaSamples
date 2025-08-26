@@ -30,6 +30,7 @@ import com.smartgridready.communicator.example.helper.EidLoader;
 /**
  * This class provides an example on how to communicate with a WAGO smart meter over Modbus RTU (RS-485),
  * using the current SmartGridready commhandler library.
+ * Supports products of the WAGO 879-3xxx line.
  * <p>
  * The device is instantiated the new fashioned way, using the device builder. A shared Modbus driver
  * registry is used in order to support multiple SGr devices on the same serial connection.
@@ -39,9 +40,10 @@ import com.smartgridready.communicator.example.helper.EidLoader;
 public class WagoSmartMeterCommunicator
 {
 	private static final Logger LOG = LoggerFactory.getLogger(WagoSmartMeterCommunicator.class);
-	private static final String DEVICE_DESCRIPTION_FILE_NAME = "SGr_04_0014_0000_WAGO_SmartMeterV0.2.1.xml";
+	private static final String DEVICE_DESCRIPTION_FILE_NAME = "SGr_00_0014_0000_WAGO_SmartMeter_V0.3.xml";
 	private static final String SERIAL_PORT_NAME = "COM3";
-	
+	private static final String SERIAL_PARITY = "NONE";
+
 	public static void main(String[] argv)
 	{
 		try
@@ -49,6 +51,7 @@ public class WagoSmartMeterCommunicator
 			// configuration placeholders to be replaced in EID
 			final var configProperties = new Properties();
 			configProperties.setProperty("serial_port", SERIAL_PORT_NAME);
+			configProperties.setProperty("serial_parity", SERIAL_PARITY);
 
 			final var device = new SGrDeviceBuilder()
 					.useSharedModbusRtu(true)
@@ -62,7 +65,7 @@ public class WagoSmartMeterCommunicator
 			LOG.info("Device-interface {}", device.getDeviceInfo().getInterfaceType());
 
 			// Read the values from all data points and log them
-			final var deviceData = device.getDeviceInfo().getValues();
+			final var deviceData = device.getValues();
 			deviceData.forEach(dataPointValue -> LOG.info(dataPointValue.toString()));
 
 			// close transport

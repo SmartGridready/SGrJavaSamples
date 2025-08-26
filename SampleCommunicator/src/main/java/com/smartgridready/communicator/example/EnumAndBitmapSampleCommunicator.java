@@ -36,7 +36,7 @@ import com.smartgridready.driver.api.common.GenDriverException;
  * This class provides examples on how to handle enumerations and bitmaps,
  * using the current SmartGridready commhandler library.
  * <br>
- * The program uses a mocked modbus driver and can be run without an attached device/product.
+ * The program uses a mocked Modbus driver and can be run without an attached device/product.
  * All configuration parameters of the EID are hard-coded, therefore no configuration properties need to be set.
  */
 public class EnumAndBitmapSampleCommunicator
