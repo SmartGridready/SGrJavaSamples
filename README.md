@@ -1,38 +1,38 @@
-# SGr-JavaSamples
-
+# SmartGridready Java Samples
 
 ## Index
+
 [Summary](#summary)<br>
 [Installation](#installation)<br>
 [Architecture](#architecture)<br>
 [Code description](#code-description-for-the-samplecommunicator)<br>
 
-
 ## Summary
-SGr-JavaSamples provides sample projects that demonstrate the use of the SGr Communication Handler Library. The goal is to set up a test environment that allows to connect SGr components and different 'products' (heat pump, charging station, inverter, battery, electricity meter etc.) through the SGr communication interface. 
 
+SGr-JavaSamples provides sample projects that demonstrate the use of the SGr Communication Handler Library. The goal is to set up a test environment that allows to connect SGr components and different 'products' (heat pump, charging station, inverter, battery, electricity meter etc.) through the SGr communication interface. 
 
 ## Installation
 
 ### Requirements / Prerequisites
+
 - Java JDK version >= Java 11
 
 ### Clone
+
 - Create a new folder for the project (eg. 'SGrJavaSamples').
 - Clone the following project to a new folder: https://github.com/SmartgridReady/SGrJavaSamples.git
 
 Rem: The folder [your-local-project-folder]/SampleCommunicator/src/main/resources contains the device description XML-files used by the SGrJavaSamples.
 
 ### Build
+
 - Open the [your-local-project-folder]/SampleCommunicator with your IDE.
 - Run the Gradle 'build' target in your IDE 
 - You can also run Gradle from the command line. Change to the directory [your-local-project-folder]/SampleCommunicator and run: `gradlew clean build`
 
-
 ## Architecture
 
 ![SGr Architecture Overview](doc/img/SGr-Architecture-Overview.png "SGr Architecture Overview")
-
 
 ### Component: Communicator
 
@@ -52,7 +52,7 @@ Rem: The folder [your-local-project-folder]/SampleCommunicator/src/main/resource
             <li>The Communicator loads a device driver for the communication interface of the product (e.g. Modbus RTU/TCP, REST...).</li>
             <li>The communicator reads or sets (analyses and/or controls) the data points.</li>
         </ul></td>
-    </tr>        
+    </tr>
     <tr>
         <td><b>SGrProject:</b></td>
         <td><p><a href="https://github.com/SmartgridReady/SGrJavaSamples/tree/master/SampleCommunicator">SGrJavaSamples/SampleCommunicator</a></p></td>
@@ -72,13 +72,13 @@ Rem: The folder [your-local-project-folder]/SampleCommunicator/src/main/resource
     </tr>
     <tr>
         <td valign="top"><b>Responsibilities:</b></td>
-        <td><p>The Generic Interface is used by the Communicator to communicate with the products in the SGr network.​</p></td>
-    </tr>        
+        <td><p>The Generic Interface is used by the Communicator to communicate with the products in the SGr network.</p></td>
+    </tr>
     <tr>
         <td><b>SGrProject:</b></td>
         <td><p><a href="https://github.com/SmartgridReady/SGrSpecifications/tree/master/SchemaDatabase/SGr/Generic">SmartgridReady/SGrSpecifications/SchemaDatabase/SGr/Generic</a></p></td>
     </tr>
-</table>  
+</table>
 
 ### Component: Communication Handler
 
@@ -94,7 +94,7 @@ Rem: The folder [your-local-project-folder]/SampleCommunicator/src/main/resource
     </tr>
     <tr>
         <td valign="top"><b>Responsibilities:</b></td>
-        <td><p>​Responsibilities are:</p>
+        <td><p>Responsibilities are:</p>
             <ul>
                 <li>Reading the XML device profiles</li>
                 <li>Processing commands of the Generic Interface</li>
@@ -110,7 +110,7 @@ Rem: The folder [your-local-project-folder]/SampleCommunicator/src/main/resource
         <td><b>SGrProject:</b></td>
         <td><p><a href="https://github.com/SmartgridReady/SGrJava/tree/master/CommHandler">SmartgridReady/SGrJava/CommHandler</a></p></td>
     </tr>
-</table> 
+</table>
 
 ### Component: XML (XML-Profile)
 
@@ -121,7 +121,7 @@ Rem: The folder [your-local-project-folder]/SampleCommunicator/src/main/resource
     </tr>
     <tr>
         <td><b>Description:</b></td>
-        <td>​<p>The XML file describes the ''function profiles', data points and attributes that can be addressed over the SGr interface. The XML file also provides general information about the 'Product'.</p></td>
+        <td><p>The XML file describes the ''function profiles', data points and attributes that can be addressed over the SGr interface. The XML file also provides general information about the 'Product'.</p></td>
     </tr>
     <tr>
         <td valign="top"><b>Responsibilities:</b></td>
@@ -129,12 +129,12 @@ Rem: The folder [your-local-project-folder]/SampleCommunicator/src/main/resource
                 <li>Providing general data on the Product.</li>
                 <li>Provide the data necessary for mapping the SGr Generic Interface with the External Interface.</li>
         </ul></td>
-    </tr>        
+    </tr>
     <tr>
         <td><b>SGrProject:</b></td>
         <td><p><a href="https://github.com/SmartgridReady/SGrSpecifications/tree/master/XMLInstances/ExtInterfaces">SmartgridReady/SGrSpecifications/XMLInstances/ExtInterfaces</a></p></td>
     </tr>
-</table> 
+</table>
 
 ### Component: Transport Layer (Transport Service)
 
@@ -152,10 +152,10 @@ Rem: The folder [your-local-project-folder]/SampleCommunicator/src/main/resource
     </tr>
     <tr>
         <td valign="top"><b>Responsibilities:</b></td>
-        <td><p>​The SGr Transport Service supports the following communication technologies to provide the following transport services:</p>
+        <td><p>The SGr Transport Service supports the following communication technologies to provide the following transport services:</p>
             <ul>
-                <li>Modbus​, REST/JSON​, Sunspec​</li>
-                <li>Support is planned for:​ OCPP 2.0​, IEC-61968-9​, IEC-608070-5-104</li>
+                <li>Modbus, REST/JSON, Sunspec</li>
+                <li>Support is planned for: OCPP 2.0, IEC-61968-9, IEC-608070-5-104</li>
             </ul>
         </td>
     </tr> 
@@ -174,7 +174,7 @@ Rem: The folder [your-local-project-folder]/SampleCommunicator/src/main/resource
             <p>für MQTT: <a href="https://github.com/SmartGridready/SGrJavaDrivers/tree/master/HiveMq">SmartgridReady/SGrJavaDrivers/HiveMq</a></p>
         </td>
     </tr>
-</table> 
+</table>
 
 ### Component: External Interface (EI)
 
@@ -262,7 +262,6 @@ You find the sample code on [github](SampleCommunicator/src/main/java/com/smartg
 If you are happy owner of a WAGO Smart-Meter you can read the read values from the real device with this sample communicator application.
 
 You find the sample code on [github](SampleCommunicator/src/main/java/com/smartgridready/communicator/example/WagoSmartMeterCommunicator.java)
-
 
 ## Further information / contact information
 

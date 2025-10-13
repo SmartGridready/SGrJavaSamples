@@ -116,9 +116,9 @@ public class AsynchronousSampleCommunicatorTest {
         //
         // Just define the return type of getVal() (Value), the functional-profile name, the data point name and the getter method of the
         // commhandler API to be called. When ReadExec is executed it will call the callable and save the result within an AsyncResult member.
-        ReadExec<Value> wagoVoltageACL1 = new ReadExec<>("VoltageAC", "VoltageL1", wagoModbusDevice::getVal);
-        ReadExec<Value> wagoVoltageACL2 = new ReadExec<>("VoltageAC", "VoltageL2", wagoModbusDevice::getVal);
-        ReadExec<Value> wagoVoltageACL3 = new ReadExec<>("VoltageAC", "VoltageL3", wagoModbusDevice::getVal);
+        ReadExec<Value> wagoVoltageACL1 = new ReadExec<>("VoltageAC", "VoltageACL1_N", wagoModbusDevice::getVal);
+        ReadExec<Value> wagoVoltageACL2 = new ReadExec<>("VoltageAC", "VoltageACL2_N", wagoModbusDevice::getVal);
+        ReadExec<Value> wagoVoltageACL3 = new ReadExec<>("VoltageAC", "VoltageACL3_N", wagoModbusDevice::getVal);
         ReadExec<Value> clemapActPowerACtot1 = new ReadExec<>("ActivePowerAC", "ActivePowerACtot", clemapRestApiDevice1::getVal);
         ReadExec<Value> clemapActPowerACtot2 = new ReadExec<>("ActivePowerAC", "ActivePowerACtot", clemapRestApiDevice2::getVal);
 
@@ -128,7 +128,7 @@ public class AsynchronousSampleCommunicatorTest {
         WriteExec<Value> garoWallboxBHemsCurrLim = new WriteExec<>("Curtailment", "HemsCurrentLimit", garoModbusDeviceB::setVal);
 
         // 3. Wire the tasks to define which tasks can be executed in parallel and which ones must be executed in sequence
-        // (example: The executables access the same device via modbus and therefore cannot be executed in parallel).
+        // (example: The executables access the same device via Modbus and therefore cannot be executed in parallel).
         // Do create a new Parallel() or a new Sequence() and add ReadExec and WriteExec instances to them.
         // To achieve this, you can create either a new 'Parallel()' or 'Sequence()' processing chain and add 'ReadExec'
         // and 'WriteExec' instances to them as needed. Additionally, you have the flexibility to nest 'Parallel()' and 'Sequence()'

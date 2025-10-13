@@ -67,8 +67,9 @@ public class BasicSampleCommunicator
 	private static final Logger LOG = LoggerFactory.getLogger(BasicSampleCommunicator.class);
 
 	private static final String PROFILE_VOLTAGE_AC = "VoltageAC";
-	private static final String DEVICE_DESCRIPTION_FILE_NAME = "SGr_04_0014_0000_WAGO_SmartMeterV0.2.1.xml";
+	private static final String DEVICE_DESCRIPTION_FILE_NAME = "SGr_00_0014_0000_WAGO_SmartMeter_V0.3.xml";
 	private static final String SERIAL_PORT_NAME = "COM3";
+    private static final String SERIAL_PARITY = "NONE";
 
 	public static void main(String[] argv)
 	{
@@ -84,6 +85,7 @@ public class BasicSampleCommunicator
 		//
 		final var configProperties = new Properties();
 		configProperties.setProperty("serial_port", SERIAL_PORT_NAME);
+        configProperties.setProperty("serial_parity", SERIAL_PARITY);
 
 		GenDeviceApi sgcpDevice;
 
@@ -93,10 +95,12 @@ public class BasicSampleCommunicator
                 // mandatory: inject device description (EID)
                 .eid(EidLoader.getDeviceDescriptionInputStream(DEVICE_DESCRIPTION_FILE_NAME))
                 // optional: inject the ModbusFactory mock
-            	.useModbusClientFactory(new MockModbusClientFactory(false))
-            	// optional: inject the configuration
-            	.properties(configProperties)
-            	.build();
+                .useModbusClientFactory(new MockModbusClientFactory(false))
+                // optional: use shared Modbus RTU gateway registry to allow multiple devices on same RS-485 bus
+                .useSharedModbusRtu(true)
+                // optional: inject the configuration
+                .properties(configProperties)
+                .build();
         }
         catch ( GenDriverException | RestApiAuthenticationException | IOException e )
         {
@@ -116,20 +120,20 @@ public class BasicSampleCommunicator
 
 			// Read specific values from the device.
 			// - "PROFILE_VOLTAGE_AC" is the name of the functional profile.
-			// - "VoltageL1", "VoltageL2" and "VoltageL3" are the names of the Datapoints that
+			// - "VoltageACL1_N", "VoltageACL2_N" and "VoltageACL3_N" are the names of the data points that
 			//   report the values corresponding to their names.
 			//
-			// Hint: You can only read values for functional profiles and datapoints that exist
+			// Hint: You can only read values for functional profiles and data points that exist
 			// in the device description (EID).
 			//
-			final var val1 = sgcpDevice.getVal(PROFILE_VOLTAGE_AC, "VoltageL1").getFloat32();
-			final var val2 = sgcpDevice.getVal(PROFILE_VOLTAGE_AC, "VoltageL2").getFloat32();
-			final var val3 = sgcpDevice.getVal(PROFILE_VOLTAGE_AC, "VoltageL3").getFloat32();
-			final var log = String.format("Wago-Meter, %s: L1=%.2fV, L2=%.2fV, L3=%.2fV", PROFILE_VOLTAGE_AC, val1, val2, val3);
+			final var val1 = sgcpDevice.getVal(PROFILE_VOLTAGE_AC, "VoltageACL1_N").getFloat32();
+			final var val2 = sgcpDevice.getVal(PROFILE_VOLTAGE_AC, "VoltageACL2_N").getFloat32();
+			final var val3 = sgcpDevice.getVal(PROFILE_VOLTAGE_AC, "VoltageACL3_N").getFloat32();
+			final var log = String.format("WAGO-Meter, %s: L1=%.2fV, L2=%.2fV, L3=%.2fV", PROFILE_VOLTAGE_AC, val1, val2, val3);
 			LOG.info(log);
 			
 			final var val4 = sgcpDevice.getVal("CurrentDirection", "CurrentDirL1");
-			final var log2 = String.format("Wago-Meter, %s: L1=%s", "CurrentDirection", val4.getString());
+			final var log2 = String.format("WAGO-Meter, %s: L1=%s", "CurrentDirection", val4.getString());
             LOG.info(log2);
 			
 			// REMARK: An example for setVal() you find in EnumAndBitmapSampleCommunicator
@@ -144,23 +148,23 @@ public class BasicSampleCommunicator
 
             // Or simply just the device configuration info.
             final var configurationInfo = sgcpDevice.getDeviceConfigurationInfo();
-            LOG.info("DeviceConfigurationInfo:" + ciToString(configurationInfo, 1));
+            LOG.info("Device configuration info:" + ciToString(configurationInfo, 1));
             
             // Or just the functional profiles.
             final var functionalProfiles = sgcpDevice.getFunctionalProfiles();
-            LOG.info("FunctionalProfiles:" + fpsToString(functionalProfiles, 1, true));
+            LOG.info("Functional profiles:" + fpsToString(functionalProfiles, 1, true));
             
             // Get a specific functional profile.
             final var functionalProfile = sgcpDevice.getFunctionalProfile(functionalProfiles.get(0).getName());
-            LOG.info("FunctionalProfile:" + fpToString(functionalProfile, 1, false));
+            LOG.info("Functional profile:" + fpToString(functionalProfile, 1, false));
             
             // Get data points of a specific functional profile.
             final var dataPoints = sgcpDevice.getDataPoints(functionalProfile.getName());
-            LOG.info("DataPoints:" + dpsToString(dataPoints, 1, true));
+            LOG.info("Data points:" + dpsToString(dataPoints, 1, true));
             
             // Get a specific data point of a specific functional profile.
             final var dataPoint = sgcpDevice.getDataPoint(functionalProfile.getName(), dataPoints.get(0).getName());
-            LOG.info("DataPoint:" + dpToString(dataPoint, 1, false));
+            LOG.info("Data point:" + dpToString(dataPoint, 1, false));
 		}
 		catch (Exception e)
 		{
@@ -268,10 +272,10 @@ public class BasicSampleCommunicator
         
         if (!shortLog)
         {
-            sb.append("\n" + tabs + "profileType:       " + fp.getProfileType());
-            sb.append("\n" + tabs + "category:          " + fp.getCategory());
-            sb.append("\n" + tabs + "genericAttributes: " + gaToString(fp.getGenericAttributes(), numOfTabs + 1));
-            sb.append("\n" + tabs + "dataPoints:        " + dpsToString(fp.getDataPoints(), numOfTabs + 1, true));
+            sb.append("\n" + tabs + "profile type:       " + fp.getProfileType());
+            sb.append("\n" + tabs + "category:           " + fp.getCategory());
+            sb.append("\n" + tabs + "generic attributes: " + gaToString(fp.getGenericAttributes(), numOfTabs + 1));
+            sb.append("\n" + tabs + "data points:        " + dpsToString(fp.getDataPoints(), numOfTabs + 1, true));
             sb.append("\n" + tabs + "---");
         }
         return sb.toString();

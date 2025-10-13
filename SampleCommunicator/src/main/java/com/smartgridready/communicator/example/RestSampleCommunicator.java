@@ -71,7 +71,7 @@ public class RestSampleCommunicator
     private static final Logger LOG = LoggerFactory.getLogger(RestSampleCommunicator.class);
 
     /** This example is tied to this EID-XML. */
-    private static final String DEVICE_DESCRIPTION_FILE_NAME = "SGr_01_mmmm_dddd_Shelly_TRV_RestAPILocal_V0.1.xml";
+    private static final String DEVICE_DESCRIPTION_FILE_NAME = "SGr_04_mmmm_dddd_Shelly_TRV_RestAPILocal_V0.1.xml";
     /** This URI is not important, can have any value. */
     private static final String BASE_URI = "https://example.com/"; 
     
@@ -158,7 +158,7 @@ public class RestSampleCommunicator
 
 
 /**
- * Mock of a REST client for the EID-XML "SGr_01_mmmm_dddd_Shelly_TRV_RestAPILocal_V0.1.xml".
+ * Mock of a REST client for the EID-XML "SGr_04_mmmm_dddd_Shelly_TRV_RestAPILocal_V0.1.xml".
  */
 class RestClientFactory implements GenHttpClientFactory
 {

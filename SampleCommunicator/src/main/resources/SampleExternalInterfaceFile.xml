@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/xsl/SGr.xsl"?>
 <DeviceFrame xmlns="http://www.smartgridready.com/ns/V0/"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://www.smartgridready.com/ns/V0/ ../../../../../SGrSpecifications/SchemaDatabase/SGr/Product/Product.xsd">
-  <deviceName>WAGOMeterV0.2.1</deviceName>
-  <manufacturerName>WAGO</manufacturerName>
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.smartgridready.com/ns/V0/ ../../SchemaDatabase/SGr/Product/Product.xsd">
+  <deviceName>Sample Device</deviceName>
+  <manufacturerName>Example</manufacturerName>
   <specificationOwnerIdentification>0</specificationOwnerIdentification>
   <releaseNotes>
     <state>Draft</state>
   </releaseNotes>
   <deviceInformation>
     <alternativeNames>
-      <workName>WAGO Beta Test File</workName>
-      <manufName>879-3xxx</manufName>
-      <eebusName>SubMeter</eebusName>
+      <workName>Sample Beta Test File</workName>
     </alternativeNames>
     <legibleDescription>
-      <textElement>This is a sample external interface description file used for demonstration purposese only</textElement>
+      <textElement>This is a sample external interface description file used for demonstration purposes only.</textElement>
       <language>en</language>
     </legibleDescription>
-    <deviceCategory>SubMeterElectricity</deviceCategory>
+    <deviceCategory>HeatPumpAppliance</deviceCategory>
     <isLocalControl>true</isLocalControl>
     <softwareRevision>1.0.0</softwareRevision>
     <hardwareRevision>1.0.0</hardwareRevision>
@@ -27,7 +25,7 @@
     <powerSource>mains1Phase</powerSource>
     <nominalPower>4 Watt</nominalPower>
     <generalRemarks>Sample EI-XML/ls</generalRemarks>
-    <levelOfOperation>4</levelOfOperation>
+    <levelOfOperation>4m</levelOfOperation>
   </deviceInformation>
   <interfaceList>
     <modbusInterface>
@@ -68,13 +66,13 @@
             <functionalProfileName>VoltageAC</functionalProfileName>
             <functionalProfileIdentification>
               <specificationOwnerIdentification>0</specificationOwnerIdentification>
-              <functionalProfileCategory>SubMeterElectricity</functionalProfileCategory>
+              <functionalProfileCategory>Metering</functionalProfileCategory>
               <functionalProfileType>VoltageAC</functionalProfileType>
-              <levelOfOperation>4</levelOfOperation>
+              <levelOfOperation>m</levelOfOperation>
               <versionNumber>
-                <primaryVersionNumber>0</primaryVersionNumber>
-                <secondaryVersionNumber>2</secondaryVersionNumber>
-                <subReleaseVersionNumber>3</subReleaseVersionNumber>
+                <primaryVersionNumber>1</primaryVersionNumber>
+                <secondaryVersionNumber>0</secondaryVersionNumber>
+                <subReleaseVersionNumber>0</subReleaseVersionNumber>
               </versionNumber>
             </functionalProfileIdentification>
             <legibleDescription>
@@ -85,7 +83,7 @@
           <dataPointList>
             <dataPointListElement>
               <dataPoint>
-                <dataPointName>VoltageL1</dataPointName>
+                <dataPointName>VoltageACL1_N</dataPointName>
                 <dataDirection>R</dataDirection>
                 <dataType>
                   <float64 />
@@ -106,7 +104,7 @@
             </dataPointListElement>
             <dataPointListElement>
               <dataPoint>
-                <dataPointName>VoltageL2</dataPointName>
+                <dataPointName>VoltageACL2_N</dataPointName>
                 <dataDirection>R</dataDirection>
                 <dataType>
                   <float64 />
@@ -127,7 +125,7 @@
             </dataPointListElement>
             <dataPointListElement>
               <dataPoint>
-                <dataPointName>VoltageL3</dataPointName>
+                <dataPointName>VoltageACL3_N</dataPointName>
                 <dataDirection>R</dataDirection>
                 <dataType>
                   <float64 />
@@ -155,7 +153,7 @@
               <specificationOwnerIdentification>0</specificationOwnerIdentification>
               <functionalProfileCategory>HeatPumpControl</functionalProfileCategory>
               <functionalProfileType>HeatPumpBase</functionalProfileType>
-              <levelOfOperation>2m</levelOfOperation>
+              <levelOfOperation>4m</levelOfOperation>
               <versionNumber>
                 <primaryVersionNumber>0</primaryVersionNumber>
                 <secondaryVersionNumber>9</secondaryVersionNumber>
