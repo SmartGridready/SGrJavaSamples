@@ -43,25 +43,25 @@ java {
 dependencies {
 
     // SGr dependencies
-    implementation group: 'com.smartgridready', name: 'sgr-commhandler', version: '2.4.1'
+    implementation group: 'com.smartgridready', name: 'sgr-commhandler', version: '2.4.2'
     runtimeOnly group: 'com.smartgridready', name: 'sgr-driver-j2mod', version: '1.0.0'
     runtimeOnly group: 'com.smartgridready', name: 'sgr-driver-apachehttp', version: '2.1.1'
     runtimeOnly group: 'com.smartgridready', name: 'sgr-driver-hivemq', version: '2.0.1'
 
     // Logging
-    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.10'
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.17'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.19.0'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j2-impl', version: '2.19.0'
 
     // Use JUnit test framework
-    implementation 'org.junit.jupiter:junit-jupiter:5.12.2'
+    implementation 'org.junit.jupiter:junit-jupiter:5.13.4'
     runtimeOnly 'org.junit.platform:junit-platform-launcher'
 
     implementation group: 'org.mockito', name: 'mockito-core', version: '5.18.0'
     implementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.18.0'
     implementation group: 'org.mockito', name: 'mockito-inline', version: '5.2.0'
 
-    implementation group: 'org.awaitility', name: 'awaitility', version: '4.2.0'
+    implementation group: 'org.awaitility', name: 'awaitility', version: '4.2.2'
 }
 
 test {
